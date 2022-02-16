@@ -30,6 +30,9 @@ jobs:
       - name: Check npm version
         run: npm -v
 
+      - name: Removes package-lock.json
+        run: rm package-lock.json
+
       - name: Install deps and build (with cache)
         uses: bahmutov/npm-install@v1
         with:
@@ -58,6 +61,9 @@ jobs:
           scope: '@iazlabs'
       - name: Check npm version
         run: npm -v
+
+      - name: Removes package-lock.json
+        run: rm package-lock.json
 
       - name: Install deps and build (with cache)
         uses: bahmutov/npm-install@v1
