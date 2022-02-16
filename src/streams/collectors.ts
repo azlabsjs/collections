@@ -60,12 +60,12 @@ export const MapCollector = <T, KeyType, ValueType>(
 };
 
 /**
- * 
- * 
- * @param keyMapper 
- * @param valueMapper 
- * @param mergeFunction 
- * @returns 
+ *
+ *
+ * @param keyMapper
+ * @param valueMapper
+ * @param mergeFunction
+ * @returns
  */
 export const WeakMapCollector = <T, KeyType extends object, ValueType>(
   keyMapper: (value: T) => KeyType,
