@@ -7,6 +7,15 @@ import {
   UnaryFunction,
 } from '@iazlabs/functional';
 
+type IterableType<T> =
+  | Generator<T>
+  | Iterable<T>
+  | T[]
+  | IterableIterator<T>
+  | ReadonlyArray<T>
+  | Set<T>
+  | ReadonlySet<T>;
+
 export interface StreamInterface<T> {
   map<R>(callback: UnaryFunction<T, R>): StreamInterface<T>;
   reduce<R>(identity: R, callback: ReducerFunc<T, R>): R;
@@ -29,11 +38,11 @@ export class Stream<T> implements StreamInterface<T> {
   private offset!: number | undefined;
 
   private constructor(
-    private _source: Generator<T> | Iterable<T>,
+    private _source: IterableType<T>,
     private infinite: boolean = false
   ) {}
 
-  static of<T>(source: Generator<T> | Iterable<T>) {
+  static of<T>(source: IterableType<T>) {
     return new Stream(source);
   }
 
@@ -114,7 +123,7 @@ export class Stream<T> implements StreamInterface<T> {
 
   firstOr<DType>(_default: DType): T | DType | undefined {
     const composedFunc = compose<T, T | DType>(...this.pipe);
-    const result = (function*(source: Generator<T> | Iterable<T>) {
+    const result = (function*(source: IterableType<T>) {
       for (let value of source) {
         const _value = composedFunc(value);
         if (typeof _value !== 'undefined') {

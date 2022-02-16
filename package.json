@@ -56,7 +56,6 @@
     "registry": "https://npm.pkg.github.com/@iazlabs"
   },
   "dependencies": {
-    "@iazlabs/functional": "^0.1.1",
-    "@iazlabs/js-object": "^0.1.0"
+    "@iazlabs/functional": "^0.1.3"
   }
 }

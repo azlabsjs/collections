@@ -1,5 +1,7 @@
+import { IterableType } from "@iazlabs/functional";
+
 // Collect the values of a stream into an array
-export const ListCollector = <T>(value: Generator<T, void>) =>
+export const ListCollector = <T>(value: IterableType<T>) =>
   Array.from(value);
 
 /**
@@ -13,7 +15,7 @@ export const ListCollector = <T>(value: Generator<T, void>) =>
  * @param value
  * @returns
  */
-export const SetCollector = <T>(value: Generator<T, void>) => new Set(value);
+export const SetCollector = <T>(value: IterableType<T>) => new Set(value);
 
 /**
  * Creates a javascript map from list of values produce by a stream.
@@ -43,7 +45,7 @@ export const MapCollector = <T, KeyType, ValueType>(
   keyMapper: (value: T) => KeyType,
   valueMapper: (value: T) => ValueType,
   mergeFunction?: (a: T | ValueType, b: T) => KeyType
-) => (iterator: Generator<T, void>) => {
+) => (iterator: IterableType<T>) => {
   const map = new Map<KeyType, ValueType>();
   for (const current of iterator) {
     let key = keyMapper(current);

@@ -1,4 +1,41 @@
-import { JSObject } from '@iazlabs/js-object';
+import { Reduce } from '@iazlabs/functional';
+
+const getProperty = <T extends { [prop: string]: any }>(
+  source: T,
+  key: string,
+  seperator: string = '.'
+) => {
+  if (
+    key === '' ||
+    typeof key === 'undefined' ||
+    key === null ||
+    typeof source === 'undefined' ||
+    source === null
+  ) {
+    return source ?? undefined;
+  }
+  if (key.includes(seperator ?? '.')) {
+    // Creates an array of inner properties
+    const properties = key.split(seperator ?? '.');
+    let current = source;
+    // Reduce the source object to a single value
+    return Reduce(
+      properties,
+      (carry, prop) => {
+        if (carry) {
+          carry =
+            current !== null && typeof current === 'object' && carry[prop]
+              ? carry[prop] ?? undefined
+              : undefined;
+        }
+        return carry;
+      },
+      source
+    );
+  } else {
+    return source ? source[key] : undefined;
+  }
+};
 
 export interface CollectionInterface<K, V> {
   /**
@@ -183,7 +220,7 @@ export const collect = <K, V>(controls: V[], using?: K) => {
   const collection = new Collection<K, V>();
   controls.forEach((current: V, index: number) => {
     collection.add(
-      typeof using === 'string' ? JSObject.getProperty(current, using) : index,
+      typeof using === 'string' ? getProperty(current, using) : index,
       current
     );
   });
