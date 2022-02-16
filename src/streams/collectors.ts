@@ -58,3 +58,30 @@ export const MapCollector = <T, KeyType, ValueType>(
   }
   return map;
 };
+
+/**
+ * 
+ * 
+ * @param keyMapper 
+ * @param valueMapper 
+ * @param mergeFunction 
+ * @returns 
+ */
+export const WeakMapCollector = <T, KeyType extends object, ValueType>(
+  keyMapper: (value: T) => KeyType,
+  valueMapper: (value: T) => ValueType,
+  mergeFunction?: (a: T | ValueType, b: T) => KeyType
+) => (iterator: IterableType<T>) => {
+  const map = new WeakMap<KeyType, ValueType>();
+  for (const current of iterator) {
+    let key = keyMapper(current);
+    if (mergeFunction && map.has(key)) {
+      const value = map.get(key);
+      if (value) {
+        key = mergeFunction(value, current);
+      }
+    }
+    map.set(key, valueMapper(current));
+  }
+  return map;
+};
