@@ -23,4 +23,4 @@ jobs:
         with:
           useLockFile: false
 
-      - run: npm run analyze
+      - run: npm run size
