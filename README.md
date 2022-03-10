@@ -8,13 +8,13 @@ Below you will find some information on how to perform common tasks.
 
 ## Usage
 
-### First, import collect and Collection in the beginning of your file :
+> First, import collect and Collection in the beginning of your file :
 
 ```ts
 import { collect, Collection } from '../src/collections';
 ```
 
-### return an empty array
+### Return an empty array
 
 ```ts
 collection.values();
