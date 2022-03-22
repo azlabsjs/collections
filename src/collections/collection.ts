@@ -3,7 +3,7 @@ import { Reduce } from '@iazlabs/functional';
 const getProperty = <T extends { [prop: string]: any }>(
   source: T,
   key: string,
-  seperator: string = '.'
+  seperator = '.'
 ) => {
   if (
     key === '' ||
@@ -17,7 +17,7 @@ const getProperty = <T extends { [prop: string]: any }>(
   if (key.includes(seperator ?? '.')) {
     // Creates an array of inner properties
     const properties = key.split(seperator ?? '.');
-    let current = source;
+    const current = source;
     // Reduce the source object to a single value
     return Reduce(
       properties,
