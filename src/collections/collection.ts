@@ -1,4 +1,4 @@
-import { Reduce } from '@iazlabs/functional';
+import { Reduce } from '@azlabsjs/functional';
 
 const getProperty = <T extends { [prop: string]: any }>(
   source: T,

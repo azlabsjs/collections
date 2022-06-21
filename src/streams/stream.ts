@@ -5,7 +5,7 @@ import {
   Function_,
   ReducerFunc,
   UnaryFunction,
-} from '@iazlabs/functional';
+} from '@azlabsjs/functional';
 
 type IterableType<T> =
   | Generator<T>
