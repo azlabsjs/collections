@@ -1,9 +1,11 @@
 {
-    "version": "0.1.9",
+    "version": "0.1.10",
     "license": "MIT",
     "main": "dist/index.js",
     "typings": "dist/types/index.d.ts",
-    "files": ["dist/**/*"],
+    "files": [
+        "dist/**/*"
+    ],
     "engines": {
         "node": ">=14"
     },
@@ -38,18 +40,21 @@
     "name": "@azlabsjs/collections",
     "author": "azandrew-sidoine",
     "module": "dist/esm/index.js",
-    "size-limit": [{
-        "path": "dist/cjs/index.js",
-        "limit": "10 KB"
-    }, {
-        "path": "dist/esm/index.js",
-        "limit": "10 KB"
-    }],
+    "size-limit": [
+        {
+            "path": "dist/cjs/index.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/esm/index.js",
+            "limit": "10 KB"
+        }
+    ],
     "publishConfig": {
-      "registry": "https://npm.pkg.github.com/@azlabsjs"
+        "registry": "https://npm.pkg.github.com/@azlabsjs"
     },
     "dependencies": {
-      "@azlabsjs/functional": "^0.1.10"
+        "@azlabsjs/functional": "^0.1.10"
     },
     "devDependencies": {
         "@azlabsjs/ts-build": "^0.1.12",
