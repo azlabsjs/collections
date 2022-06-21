@@ -5,7 +5,6 @@ type ContainerInterface = { has: (prop: string, value?: any) => boolean };
 // const LARGE_ARRAY_SIZE = 200;
 const CHUNK_SIZE_LIMIT = 512;
 
-
 export class JSArray {
   /**
    * @description Filter a list item based on a specific condition
