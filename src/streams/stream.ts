@@ -5,7 +5,7 @@ import {
   Function_,
   ReducerFunc,
   UnaryFunction,
-} from '@iazlabs/functional';
+} from '@azlabsjs/functional';
 
 type IterableType<T> =
   | Generator<T>
@@ -84,7 +84,7 @@ export class Stream<T> implements StreamInterface<T> {
           )(source)
         : undefined
     );
-    for (let value of this.__offset().__limit()._source) {
+    for (const value of this.__offset().__limit()._source) {
       result = composedFunc(value);
     }
     return result;
@@ -107,7 +107,7 @@ export class Stream<T> implements StreamInterface<T> {
       }
       return result;
     });
-    for (let value of this.__offset().__limit()._source) {
+    for (const value of this.__offset().__limit()._source) {
       result = composedFunc(value);
     }
     return result;
@@ -124,7 +124,7 @@ export class Stream<T> implements StreamInterface<T> {
   firstOr<DType>(_default: DType): T | DType | undefined {
     const composedFunc = compose<T, T | DType>(...this.pipe);
     const result = (function*(source: IterableType<T>) {
-      for (let value of source) {
+      for (const value of source) {
         const _value = composedFunc(value);
         if (typeof _value !== 'undefined') {
           yield _value;
@@ -151,7 +151,7 @@ export class Stream<T> implements StreamInterface<T> {
     this._throwIfUnsafe();
     function* gen(source: Iterable<T>, pipe: Function_[]) {
       const composedFunc = compose<T, any>(...pipe);
-      for (let value of source) {
+      for (const value of source) {
         const result = composedFunc(value);
         if (typeof result !== 'undefined') {
           yield result;
@@ -168,7 +168,7 @@ export class Stream<T> implements StreamInterface<T> {
         callback(current);
       }
     });
-    for (let value of this.__offset().__limit()._source) {
+    for (const value of this.__offset().__limit()._source) {
       composedFunc(value);
     }
   }

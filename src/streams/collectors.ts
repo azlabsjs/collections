@@ -1,4 +1,4 @@
-import { IterableType } from '@iazlabs/functional';
+import { IterableType } from '@azlabsjs/functional';
 
 // Collect the values of a stream into an array
 export const ListCollector = <T>(value: IterableType<T>) => Array.from(value);

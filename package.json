@@ -1,61 +1,71 @@
 {
-  "version": "0.1.10",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
-  "engines": {
-    "node": ">=14"
-  },
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "test:coverage": "tsdx test --coverage",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
-  },
-  "peerDependencies": {},
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "name": "@iazlabs/collections",
-  "author": "azandrew-sidoine",
-  "module": "dist/collections.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/collections.cjs.production.min.js",
-      "limit": "10 KB"
+    "version": "0.1.9",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "typings": "dist/types/index.d.ts",
+    "files": ["dist/**/*"],
+    "engines": {
+        "node": ">=14"
     },
-    {
-      "path": "dist/collections.esm.js",
-      "limit": "10 KB"
+    "scripts": {
+        "build": "ts-build build",
+        "lint": "ts-build lint",
+        "prepare": "git config core.hookspath .githooks && ts-build build",
+        "size": "size-limit",
+        "analyze": "size-limit --why",
+        "test": "jest",
+        "betterer": "betterer --strict",
+        "prettier": "prettier --write src/**/*"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "eslint"
+        }
+    },
+    "prettier": {
+        "printWidth": 80,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js",
+            "default": "./dist/cjs/index.js"
+        }
+    },
+    "name": "@azlabsjs/collections",
+    "author": "azandrew-sidoine",
+    "module": "dist/esm/index.js",
+    "size-limit": [{
+        "path": "dist/cjs/index.js",
+        "limit": "10 KB"
+    }, {
+        "path": "dist/esm/index.js",
+        "limit": "10 KB"
+    }],
+    "publishConfig": {
+      "registry": "https://npm.pkg.github.com/@azlabsjs"
+    },
+    "dependencies": {
+      "@azlabsjs/functional": "^0.1.10"
+    },
+    "devDependencies": {
+        "@azlabsjs/ts-build": "^0.1.12",
+        "@betterer/cli": "^5.3.6",
+        "@betterer/typescript": "^5.3.6",
+        "@size-limit/preset-small-lib": "^7.0.8",
+        "@types/jest": "^28.1.3",
+        "@typescript-eslint/eslint-plugin": "^5.29.0",
+        "@typescript-eslint/parser": "^5.29.0",
+        "husky": "^8.0.1",
+        "jest": "^28.1.1",
+        "jest-watch-typeahead": "^1.1.0",
+        "prettier": "^2.7.1",
+        "size-limit": "^7.0.8",
+        "ts-jest": "^28.0.5",
+        "tslib": "^2.4.0",
+        "typescript": "^4.7.4"
     }
-  ],
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^7.0.8",
-    "husky": "^7.0.4",
-    "size-limit": "^7.0.8",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.5.5"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@iazlabs"
-  },
-  "dependencies": {
-    "@iazlabs/functional": "^0.1.3"
-  }
 }

@@ -61,7 +61,7 @@ export class JSArray {
   public static sort<T>(
     list: T[],
     path?: string[] | string | ((a: T, b: T) => number),
-    order: number = 1
+    order = 1
   ) {
     order = order ?? 1;
     // Check if is not null
@@ -101,7 +101,7 @@ export class JSArray {
    * @description Convert a multi-dimensional array into a single dimensional array
    * @param list A two dimensionnal array of objects
    */
-  public static flatten = <T>(list: T[], depth: number = Infinity) =>
+  public static flatten = <T>(list: T[], depth = Infinity) =>
     list.flat(depth);
 
   /**
@@ -162,7 +162,7 @@ export class JSArray {
   /**
    * Returns values in both a and b list
    */
-  public static intersect = <T extends any>(a: T[], b: T[]) => {
+  public static intersect = <T>(a: T[], b: T[]) => {
     const b_ = new Set(b);
     return [...new Set(a)].filter(e => b_.has(e));
   };
@@ -181,7 +181,7 @@ export class JSArray {
    * Compute the diff of two set of values
    * @returns
    */
-  public static diff = <T extends any>(a: T[], b: T[]) =>
+  public static diff = <T>(a: T[], b: T[]) =>
     Array.from(
       new Set([
         ...a.filter(x => !b.includes(x)),
@@ -193,7 +193,7 @@ export class JSArray {
    * Compute the diff of two set of values
    * @returns
    */
-  public static symetricDiff = <T extends any>(a: T[], b: T[]) => {
+  public static symetricDiff = <T>(a: T[], b: T[]) => {
     a = a ?? [];
     b = b ?? [];
     const aLength = a.length;
@@ -235,7 +235,7 @@ export class JSArray {
     return values.slice(-1)[0];
   };
 
-  static includes = <T>(list: T[], target: T, offset: number = 0) =>
+  static includes = <T>(list: T[], target: T, offset = 0) =>
     list.includes(target, offset);
 
   static seqSearch = <T>(list: T[], target: T, comparator?: Comparator<T>) => {
@@ -256,7 +256,7 @@ export class JSArray {
     return false;
   };
 
-  static tail = <T>(list: T[], from: number = 0) => {
+  static tail = <T>(list: T[], from = 0) => {
     if (typeof list === 'undefined' || list === null) {
       return [];
     }
