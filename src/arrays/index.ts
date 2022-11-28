@@ -25,7 +25,7 @@ export class JSArray {
    * @param list List of items
    * @param size Size of each chunk
    */
-  public static chunk<T>(list: T[], size: number) {
+  public static chunk<T>(list: T[], size: number): T[][] {
     const temp = [];
     size = Math.min(CHUNK_SIZE_LIMIT, size);
     for (let index = 0; index < list.length; index += size) {

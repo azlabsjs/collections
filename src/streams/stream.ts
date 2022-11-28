@@ -4,8 +4,10 @@ import {
   FilterFunc,
   Function_,
   ReducerFunc,
-  UnaryFunction,
+  UnaryFunction
 } from '@azlabsjs/functional';
+
+const nothing = Symbol('__no_value__');
 
 type IterableType<T> =
   | Generator<T>
@@ -47,7 +49,7 @@ export class Stream<T> implements StreamInterface<T> {
   }
 
   static iterate<T>(seed: T, callback: UnaryFunction<T, T>) {
-    const source = (function*() {
+    const source = (function* () {
       yield seed;
       while (true) {
         seed = callback(seed);
@@ -58,7 +60,7 @@ export class Stream<T> implements StreamInterface<T> {
   }
 
   static range(start: number, end: number, step = 1) {
-    return Stream.iterate(start, x => x + (step ?? 1)).take(end - start);
+    return Stream.iterate(start, (x) => x + (step ?? 1)).take(end - start);
   }
 
   private _throwIfUnsafe() {
@@ -76,13 +78,13 @@ export class Stream<T> implements StreamInterface<T> {
   ) {
     this._throwIfUnsafe();
     let result = initial;
-    const composedFunc = compose<T, ReducerRType>(...this.pipe, source =>
-      typeof source !== 'undefined'
+    const composedFunc = compose<T, ReducerRType>(...this.pipe, (source) =>
+      source !== nothing
         ? compose(
             (source: T) => mapFunc(source),
             (source: R) => reducerFunc(result, source)
           )(source)
-        : undefined
+        : nothing
     );
     for (const value of this.__offset().__limit()._source) {
       result = composedFunc(value);
@@ -93,7 +95,7 @@ export class Stream<T> implements StreamInterface<T> {
   map<R>(callback: UnaryFunction<T, R>): StreamInterface<T> {
     this.pipe = [
       ...this.pipe,
-      source => (typeof source !== 'undefined' ? callback(source) : undefined),
+      (source) => (source !== nothing ? callback(source) : nothing),
     ];
     return this;
   }
@@ -101,8 +103,8 @@ export class Stream<T> implements StreamInterface<T> {
   reduce<R>(identity: R, callback: ReducerFunc<T, R>): R {
     this._throwIfUnsafe();
     let result = identity;
-    const composedFunc = compose<T, R>(...this.pipe, current => {
-      if (typeof current !== 'undefined') {
+    const composedFunc = compose<T, R>(...this.pipe, (current) => {
+      if (current !== nothing) {
         result = callback(result, current);
       }
       return result;
@@ -116,24 +118,24 @@ export class Stream<T> implements StreamInterface<T> {
   filter(callback: FilterFunc<T>): StreamInterface<T> {
     this.pipe = [
       ...this.pipe,
-      source => (callback(source) ? source : undefined),
+      (source) => (callback(source) ? source : nothing),
     ];
     return this;
   }
 
-  firstOr<DType>(_default: DType): T | DType | undefined {
-    const composedFunc = compose<T, T | DType>(...this.pipe);
-    const result = (function*(source: IterableType<T>) {
+  firstOr<TDefault>(_default: TDefault): T | TDefault | undefined {
+    const composedFunc = compose<T, T | TDefault>(...this.pipe);
+    const result = (function* (source: IterableType<T>) {
       for (const value of source) {
-        const _value = composedFunc(value);
-        if (typeof _value !== 'undefined') {
-          yield _value;
+        const result = composedFunc(value) as T | TDefault | symbol;
+        if (result !== nothing) {
+          yield result;
           return;
         }
       }
       yield undefined;
     })(this.__offset().__limit()._source);
-    return (result.next().value as T | DType) ?? _default;
+    return (result.next().value as T | TDefault) ?? _default;
   }
 
   take(n: number): StreamInterface<T> {
@@ -153,7 +155,7 @@ export class Stream<T> implements StreamInterface<T> {
       const composedFunc = compose<T, any>(...pipe);
       for (const value of source) {
         const result = composedFunc(value);
-        if (typeof result !== 'undefined') {
+        if (result !== nothing) {
           yield result;
         }
       }
@@ -163,8 +165,8 @@ export class Stream<T> implements StreamInterface<T> {
 
   forEach(callback: UnaryFunction<T, void>): void {
     this._throwIfUnsafe();
-    const composedFunc = compose<T, void>(...this.pipe, current => {
-      if (typeof current !== 'undefined') {
+    const composedFunc = compose<T, void>(...this.pipe, (current) => {
+      if (current !== nothing) {
         callback(current);
       }
     });
@@ -175,7 +177,7 @@ export class Stream<T> implements StreamInterface<T> {
 
   private __offset() {
     if (this.offset) {
-      this._source = (function*(source: Iterable<T>, length: number) {
+      this._source = (function* (source: Iterable<T>, length: number) {
         let index = 0;
         for (const value of source) {
           index++;
@@ -189,7 +191,7 @@ export class Stream<T> implements StreamInterface<T> {
 
   private __limit() {
     if (this.limit) {
-      this._source = (function*(source: Iterable<T>, length: number) {
+      this._source = (function* (source: Iterable<T>, length: number) {
         let index = 0;
         for (const value of source) {
           index++;
