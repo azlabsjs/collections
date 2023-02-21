@@ -220,7 +220,7 @@ export const collect = <K, V>(controls: V[], using?: K) => {
   const collection = new Collection<K, V>();
   controls.forEach((current: V, index: number) => {
     collection.add(
-      typeof using === 'string' ? getProperty(current, using) : index,
+      typeof using === 'string' && typeof current === 'object' ? getProperty(current as any, using) : index,
       current
     );
   });

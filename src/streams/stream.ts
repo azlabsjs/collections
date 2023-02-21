@@ -1,8 +1,8 @@
 import {
   CollectorFunc,
   compose,
-  FilterFunc,
   Function_,
+  Predicate,
   ReducerFunc,
   UnaryFunction
 } from '@azlabsjs/functional';
@@ -21,7 +21,7 @@ type IterableType<T> =
 export interface StreamInterface<T> {
   map<R>(callback: UnaryFunction<T, R>): StreamInterface<T>;
   reduce<R>(identity: R, callback: ReducerFunc<T, R>): R;
-  filter(callback: FilterFunc<T>): StreamInterface<T>;
+  filter(callback: Predicate<T>): StreamInterface<T>;
   firstOr<DType>(default_: DType): T | DType | undefined;
   take(n: number): StreamInterface<T>;
   skip(n: number): StreamInterface<T>;
@@ -115,7 +115,7 @@ export class Stream<T> implements StreamInterface<T> {
     return result;
   }
 
-  filter(callback: FilterFunc<T>): StreamInterface<T> {
+  filter(callback: Predicate<T>): StreamInterface<T> {
     this.pipe = [
       ...this.pipe,
       (source) => (callback(source) ? source : nothing),
