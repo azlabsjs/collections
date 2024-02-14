@@ -110,10 +110,13 @@ export interface CollectionInterface<K, V> {
 export class Collection<K, V> implements CollectionInterface<K, V> {
   // Properties
   private items: Map<K, V> = new Map();
+
+  // collection counter property
   private counter = 0;
 
   /**
    * @description Build a new collection from a predefined collection. Provide a shalow copy of the collection passed as parameter
+   * 
    * @param source [[ICollection<T>]]
    */
   static from<K, V>(source: CollectionInterface<K, V>) {

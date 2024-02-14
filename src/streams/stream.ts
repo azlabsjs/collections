@@ -4,11 +4,17 @@ import {
   Function_,
   Predicate,
   ReducerFunc,
-  UnaryFunction
+  UnaryFunction,
 } from '@azlabsjs/functional';
 
+/**
+ * @internal
+ */
 const nothing = Symbol('__no_value__');
 
+/**
+ * @internal
+ */
 type IterableType<T> =
   | Generator<T>
   | Iterable<T>
@@ -19,7 +25,7 @@ type IterableType<T> =
   | ReadonlySet<T>;
 
 export interface StreamInterface<T> {
-  map<R>(callback: UnaryFunction<T, R>): StreamInterface<T>;
+  map<R>(callback: UnaryFunction<T, R>): StreamInterface<R>;
   reduce<R>(identity: R, callback: ReducerFunc<T, R>): R;
   filter(callback: Predicate<T>): StreamInterface<T>;
   firstOr<DType>(default_: DType): T | DType | undefined;
@@ -92,12 +98,12 @@ export class Stream<T> implements StreamInterface<T> {
     return result;
   }
 
-  map<R>(callback: UnaryFunction<T, R>): StreamInterface<T> {
+  map<R>(callback: UnaryFunction<T, R>) {
     this.pipe = [
       ...this.pipe,
       (source) => (source !== nothing ? callback(source) : nothing),
     ];
-    return this;
+    return this as unknown as StreamInterface<R>;
   }
 
   reduce<R>(identity: R, callback: ReducerFunc<T, R>): R {
@@ -115,7 +121,7 @@ export class Stream<T> implements StreamInterface<T> {
     return result;
   }
 
-  filter(callback: Predicate<T>): StreamInterface<T> {
+  filter(callback: Predicate<T>) {
     this.pipe = [
       ...this.pipe,
       (source) => (callback(source) ? source : nothing),
@@ -138,13 +144,13 @@ export class Stream<T> implements StreamInterface<T> {
     return (result.next().value as T | TDefault) ?? _default;
   }
 
-  take(n: number): StreamInterface<T> {
+  take(n: number) {
     this.infinite = false;
     this.limit = n;
     return this;
   }
 
-  skip(n: number): StreamInterface<T> {
+  skip(n: number) {
     this.offset = n;
     return this;
   }

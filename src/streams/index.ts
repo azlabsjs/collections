@@ -1,2 +1,2 @@
 export { Stream } from './stream';
-export { ListCollector, SetCollector } from './collectors';
+export { ListCollector, SetCollector, MapCollector, WeakMapCollector } from './collectors';
